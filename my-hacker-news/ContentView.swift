@@ -8,16 +8,32 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    // observer design pattern
+    @ObservedObject var networkManager = NetworkManager()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationView {
+            List(self.networkManager.posts) { post in
+                HStack {
+                    Text(String(post.points))
+                    Text(post.title)
+                }
+                
+            } 
+            .navigationTitle("Hacker News")
         }
-        .padding()
+        .onAppear {
+            self.networkManager.fetchData()
+        }
     }
 }
+//
+//let posts = [
+//    Post(id: "1", title: "Hello"),
+//    Post(id: "2", title: "Bonjour"),
+//    Post(id: "3", title: "Hola")
+//]
 
 #Preview {
     ContentView()
